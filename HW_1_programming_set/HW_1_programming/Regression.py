@@ -180,10 +180,15 @@ def linear_regression(X, Y):
     N = X.shape[1] # number of data instances
 
     ### Your job 1 starts here ###
-    X_augmented = np.vstack([X, np.ones((1, N))])  # Add 1s for bias
-    w_b = np.matmul(np.linalg.inv(np.matmul(X_augmented, X_augmented.T)), np.matmul(X_augmented, Y))
-    w = w_b[:-1]  # Extract weights
-    b = w_b[-1]  # Extract bias
+    # Add a row of 1s to X for the bias term
+    X_augmented = np.vstack([X, np.ones((1, N))])
+    # linear closed-form: w = (XX^T)^-1 XY
+    XXT = np.matmul(X_augmented, X_augmented.T)
+    XXTinv = np.linalg.inv(XXT)
+    XY = np.matmul(X_augmented, Y)
+    w_b = np.matmul(XXTinv, XY)
+    w = w_b[:-1]
+    b = w_b[-1]
     ### Your job 1 ends here ###
 
     return w, b
