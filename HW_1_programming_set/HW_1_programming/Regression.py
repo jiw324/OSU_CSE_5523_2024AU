@@ -180,8 +180,10 @@ def linear_regression(X, Y):
     N = X.shape[1] # number of data instances
 
     ### Your job 1 starts here ###
-    # Note that, if you want to apply the closed-form solution, you may want to append 1 to every column of X
-
+    X_augmented = np.vstack([X, np.ones((1, N))])  # Add 1s for bias
+    w_b = np.matmul(np.linalg.inv(np.matmul(X_augmented, X_augmented.T)), np.matmul(X_augmented, Y))
+    w = w_b[:-1]  # Extract weights
+    b = w_b[-1]  # Extract bias
     ### Your job 1 ends here ###
 
     return w, b
@@ -257,7 +259,9 @@ def main(args):
             # the for loop (i.e., "for poly in range(1, 12)") that the leads to the smallest val_error
             # You may use the variable "best_poly" and "cur_best_val_error" defined above.
             # Please record the best polynomial degree in the variable best_poly.
-
+            if val_error < cur_best_val_error:
+                cur_best_val_error = val_error
+                best_poly = poly
             ### Your job 2 ends here ###
 
         # Running LR (in final testing step)
